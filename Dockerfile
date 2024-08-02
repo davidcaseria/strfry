@@ -45,6 +45,7 @@ RUN \
   && rm -rf /var/cache/apk/*
 
 COPY --from=build /build/strfry strfry
+COPY --from=build /build/strfry.conf strfry.conf
 
 EXPOSE 7777
 
