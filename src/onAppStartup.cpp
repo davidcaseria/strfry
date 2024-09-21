@@ -5,6 +5,8 @@
 
 #include "golpe.h"
 
+#include <negentropy/storage/BTreeLMDB.h>
+
 
 static void dbCheck(lmdb::txn &txn, const std::string &cmd) {
     auto dbTooOld = [&](uint64_t ver) {
@@ -22,7 +24,8 @@ static void dbCheck(lmdb::txn &txn, const std::string &cmd) {
     auto s = env.lookup_Meta(txn, 1);
 
     if (!s) {
-        env.insert_Meta(txn, CURR_DB_VERSION, 1);
+        env.insert_Meta(txn, CURR_DB_VERSION, 1, 1);
+        env.insert_NegentropyFilter(txn, "{}");
         return;
     }
 
@@ -65,8 +68,12 @@ static void setRLimits() {
 }
 
 
+lmdb::dbi negentropyDbi;
+
 void onAppStartup(lmdb::txn &txn, const std::string &cmd) {
     dbCheck(txn, cmd);
 
     setRLimits();
+
+    negentropyDbi = negentropy::storage::BTreeLMDB::setupDB(txn, "negentropy");
 }

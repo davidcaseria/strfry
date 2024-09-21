@@ -48,7 +48,7 @@ void RelayServer::runWebsocket(ThreadPool<MsgWebsocket>::Thread &thr) {
     tempBuf.reserve(cfg().events__maxEventSize + MAX_SUBID_SIZE + 100);
 
 
-    tao::json::value supportedNips = tao::json::value::array({ 1, 2, 4, 9, 11, 20, 22, 28, 40, 70 });
+    tao::json::value supportedNips = tao::json::value::array({ 1, 2, 4, 9, 11, 22, 28, 40, 70, 77 });
 
     auto getServerInfoHttpResponse = [&supportedNips, ver = uint64_t(0), rendered = std::string("")]() mutable {
         if (ver != cfg().version()) {
@@ -56,6 +56,7 @@ void RelayServer::runWebsocket(ThreadPool<MsgWebsocket>::Thread &thr) {
                 { "supported_nips", supportedNips },
                 { "software", "git+https://github.com/hoytech/strfry.git" },
                 { "version", APP_GIT_VERSION },
+                { "negentropy", negentropy::PROTOCOL_VERSION - 0x60 },
                 { "limitation", tao::json::value({
                     { "max_message_length", cfg().relay__maxWebsocketPayloadSize },
                     { "max_subscriptions", cfg().relay__maxSubsPerConnection },
@@ -81,7 +82,8 @@ void RelayServer::runWebsocket(ThreadPool<MsgWebsocket>::Thread &thr) {
             struct {
                 std::string supportedNips;
                 std::string version;
-            } ctx = { tao::json::to_string(supportedNips), APP_GIT_VERSION };
+                uint64_t negentropy;
+            } ctx = { tao::json::to_string(supportedNips), APP_GIT_VERSION, negentropy::PROTOCOL_VERSION - 0x60 };
 
             rendered = preGenerateHttpResponse("text/html", ::strfrytmpl::landing(ctx).str);
             ver = cfg().version();
