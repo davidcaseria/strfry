@@ -8,6 +8,7 @@ pipeline = ["protected_events", "kinds", "ratelimit"]
 allowed_kinds = [
     0,
     3,
+    5,
     7,
     1059,
     7375,
@@ -29,4 +30,4 @@ allowed_kinds = [
 ]
 
 [filters.ratelimit]
-posts_per_minute = 60
+posts_per_minute = 600
