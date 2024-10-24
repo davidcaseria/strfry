@@ -1,0 +1,32 @@
+
+
+pipeline = ["protected_events", "kinds", "ratelimit"]
+
+[filters.protected_events]
+
+[filters.kinds]
+allowed_kinds = [
+    0,
+    3,
+    7,
+    1059,
+    7375,
+    7376,
+    9734,
+    9735,
+    10000,
+    10002,
+    10019,
+    10050,
+    13194,
+    28333,
+    30000,
+    30078,
+    37375,
+    38333,
+    38334,
+    38335,
+]
+
+[filters.ratelimit]
+posts_per_minute = 60
