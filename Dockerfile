@@ -1,7 +1,7 @@
 # Built by Akito
 # npub1wprtv89px7z2ut04vvquscpmyfuzvcxttwy2csvla5lvwyj807qqz5aqle
 
-FROM alpine:3.19 AS build
+FROM alpine:3.18 AS build
 
 ENV TZ=Etc/UTC
 
@@ -30,7 +30,7 @@ RUN \
   && make setup-golpe \
   && make -j4
 
-FROM rust:1.82.0-alpine3.19 AS rust-build
+FROM rust:1.82.0-alpine3.18 AS rust-build
 
 WORKDIR /build
 
@@ -40,7 +40,7 @@ RUN apk --no-cache add build-base gcc git libc6-compat musl-dev && \
   git checkout allowed-kinds && \
   cargo build --target x86_64-unknown-linux-musl --release
 
-FROM alpine:3.19
+FROM alpine:3.18
 
 WORKDIR /app
 
