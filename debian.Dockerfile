@@ -2,7 +2,7 @@ FROM debian:bookworm-slim AS build
 WORKDIR /build
 
 RUN apt update && apt install -y --no-install-recommends \
-    git g++ make pkg-config libtool ca-certificates \
+    git g++ build-essential make pkg-config libtool ca-certificates \
     libssl-dev zlib1g-dev liblmdb-dev libflatbuffers-dev \
     libsecp256k1-dev libzstd-dev
 
@@ -26,7 +26,7 @@ FROM debian:bookworm-slim AS runner
 WORKDIR /app
 
 RUN apt update && apt install -y --no-install-recommends \
-    liblmdb0 libflatbuffers-dev libsecp256k1-dev libb2-1 libzstd1 libssl3 \
+    liblmdb0 libflatbuffers-dev libsecp256k1-dev libb2-1 libzstd1 libssl3 libstdc++6 \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=build /build/strfry strfry
