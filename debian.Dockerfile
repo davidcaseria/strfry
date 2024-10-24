@@ -26,7 +26,7 @@ FROM debian:bookworm-slim AS runner
 WORKDIR /app
 
 RUN apt update && apt install -y --no-install-recommends \
-    liblmdb0 libflatbuffers-dev libsecp256k1-dev libb2-1 libzstd1 \
+    liblmdb0 libflatbuffers-dev libsecp256k1-dev libb2-1 libzstd1 libssl3 \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=build /build/strfry strfry
